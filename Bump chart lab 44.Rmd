@@ -1,0 +1,79 @@
+---
+title: "bump chart lab 44"
+author: "Luz Yolanda Rivera"
+date: "10/8/2021"
+output: html_document
+---
+# Hecho con gusto por Luz Yolanda Rivera (UAEH)
+# LABORATORIO - Gráficas Bump chart básico con ggplot2
+#################################################
+# Objetivo: hacer diversas visualizaciones Bump chart básico con ggplot2
+# ------------------------------------------------
+
+#requisitos
+# install.packages("tidyverse")
+#install.packages("ggbump")
+#library(tidyverse)
+```{r}
+library(ggbump)
+library(ggplot2)
+library(magrittr)
+library(dplyr)
+```
+
+#El siguiente conjunto de datos representa la clasificación (y) de algunos jugadores de tenis (grupo) 
+#a lo largo de los años (x), estos datos serán usados en los ejemplos siguientes.
+```{r}
+año <- rep(2019:2021, 4)
+posicion <- c(4, 2, 2, 3, 1, 4, 2, 3, 1, 1, 4, 3)
+jugador <- c("A", "A", "A",
+             "B", "B", "B", 
+             "C", "C", "C",
+             "D", "D", "D")
+```
+
+#hacemos un data frame con los datos de los jugadores de año, posicion y jugador
+```{r}
+df <- data.frame(x = año,
+                 y = posicion,
+                 grupo = jugador)
+```
+
+#creamos el bump chart básico
+```{r}
+ggplot(df, aes(x = x, y = y, color = grupo)) +
+  geom_bump()
+```
+
+
+#se agregan puntos sobre las líneas
+```{r}
+ggplot(df, aes(x = x, y = y, color = grupo)) +
+  geom_bump(size = 1.5) +
+  geom_point(size = 6)
+```
+
+#se puede cambiar la paleta de colores
+```{r}
+ggplot(df, aes(x = x, y = y, color = grupo)) +
+  geom_bump(size = 1.5) +
+  geom_point(size = 6) +
+  scale_color_brewer(palette = "RdBu")
+```
+
+#se pueden eliminar diferentes aspectos del gráfico
+```{r}
+ggplot(df, aes(x = x, y = y, color = grupo)) +
+  geom_bump(size = 1.5) +
+  geom_point(size = 6) +
+  geom_text(data = df %>% filter(x == min(x)),
+            aes(x = x - 0.1, label = grupo),
+            size = 5, hjust = 1) +
+  geom_text(data = df %>% filter(x == max(x)),
+            aes(x = x + 0.1, label = grupo),
+            size = 5, hjust = 0) +
+  scale_color_brewer(palette = "RdBu") +
+  theme_void() +
+  theme(legend.position = "none")
+```
+

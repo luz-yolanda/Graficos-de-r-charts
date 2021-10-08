@@ -1,0 +1,68 @@
+---
+title: "radar con ggradar de ggplot2"
+author: "Luz Yolanda Rivera"
+date: "10/8/2021"
+output: html_document
+---
+# Hecho con gusto por Luz Yolanda Rivera (UAEH)
+# LABORATORIO - Gráfico de radar con ggradar en ggplot2
+#################################################
+# Objetivo: hacer diversas visualizaciones de radar con ggradar en ggplot2
+#práctica de página r-charts https://r-charts.com/es/evolucion/newggslopegraph/
+# ------------------------------------------------
+
+#requisitos
+#install.packages("devtools")
+#devtools::install_github("ricardo-bion/ggradar")
+```{r}
+
+library(devtools)
+library(ggradar)
+```
+
+
+#El paquete ggradar contiene una función del mismo nombre que necesita 
+#un data frame como entrada, donde la primera columna es el nombre de los grupos
+#y cada columna representa una variable. Ten en cuenta que todas las columnas
+#deben tener la misma escala.
+```{r}
+set.seed(4)
+df <- data.frame(matrix(runif(30), ncol = 10))
+df[, 1] <- paste0("G", 1:3)
+colnames(df) <- c("Grupo", paste("Var", 1:9))
+```
+
+
+Gráfico de radar básico
+#Pasando el data frame a la función ggradar se creará la siguiente visualización
+#Ten en cuenta que si los valores de tus columnas no están entre 0 y 1 
+#tendrás que especificar el valor mínimo con grid.min y el máximo con grid.max.
+```{r}
+ggradar(df)
+```
+
+Etiquetas de gráfico
+```{r}
+ggradar(df, 
+        values.radar = c(0, 0.5, 1),
+        axis.labels = paste0("A", 1:9))
+```
+
+colores y tipos de lineas
+#La función proporciona varios argumentos para personalizar los colores, 
+#como background.circle.colour para el color de fondo, group.colours para los
+#colores de las líneas y gridline.X.colour para personalizar el color del grid, 
+#siendo X min, max o mid.
+```{r}
+lcols <- c("#EEA236", "#5CB85C", "#46B8DA")
+
+ggradar(df,
+        background.circle.colour = "white",
+        axis.line.colour = "gray60",
+        gridline.min.colour = "gray60",
+        gridline.mid.colour = "gray60",
+        gridline.max.colour = "gray60",
+        group.colours = lcols)
+```
+
+
